@@ -1,11 +1,17 @@
 "use client";
 
 import { createContext, useState, useContext } from "react";
-import type React from "react"; // Added import for React
+import type React from "react"; 
 
-const I18nContext = createContext({
+interface I18nContextValue {
+  language: string;
+  setLanguage: (lang: string) => void;
+  t: (key: string) => string;
+}
+
+const I18nContext = createContext<I18nContextValue>({
   language: "en",
-  setLanguage: (lang: string) => {},
+  setLanguage: () => {},
   t: (key: string) => key,
 });
 
@@ -70,7 +76,9 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <I18nContext.Provider value={{ language, setLanguage, t }}>
+    <I18nContext.Provider
+      value={{ language, setLanguage, t } as I18nContextValue}
+    >
       {children}
     </I18nContext.Provider>
   );
